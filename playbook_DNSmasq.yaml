@@ -1,0 +1,12 @@
+---
+- hosts: ubuntu-server
+  gather_facts: true
+  become: true
+
+    # Запрашиваем логин и пароль от удалённого хоста для подключения по SSH из зашифрованного файла vars.yaml 
+  vars_files:
+    - vars.yml
+
+    # Указываем роль которую будем использовать
+  roles:
+    - ftp_server_vsftpd
