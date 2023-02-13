@@ -3,51 +3,40 @@
 - hosts: ubuntu-server
   gather_facts: false
   become: true
-    #become_method=sudo
-    #become_user=root
-    #become_ask_pass=False
 
-    # Запрашиваем логин и пароль от удалённого хоста для подключения по SSH из зашифрованного файла vars.yaml 
+    # Запрашиваем логин и пароль от удалённого хоста для подключения по SSH и логин пароли создаваемых пользователей из зашифрованного файла vars.yaml 
   vars_files:
     - vars.yml
 
-    # Создание пользователя 
+    # Создание пользователeй 
     # Описание модуля user: https://docs.ansible.com/ansible/2.8/modules/user_module.html#user-module
   tasks: 
-    - name: Add a new user named provision
+    - name: Add a new users2
       user:
-        name: provision
-        password: "{{ provision_password }}"
+        name: user2
+        password: "{{ user2_password }}"
         shell: /bin/bash
         groups: sudo
         append: yes
 
+    - name: Add a new users3
+      user:
+        name: user3
+        password: "{{ user3_password }}"
+        shell: /bin/bash
+        groups: sudo
+        append: yes
 
+    - name: adding user2 to sudoers
+      ansible.builtin.lineinfile: 
+        path: /etc/sudoers 
+        state: present
+        line: 'user2 ALL=(ALL)       NOPASSWD: ALL' 
+        validate: 'visudo -cf %s'
 
-
-- name: We will disable anonymous login
-  ansible.builtin.lineinfile:
-    path: /etc/vsftpd.conf
-    regexp: '^anonymous_enable='
-    line: anonymous_enable=NO
-
-     # Разрешаем локальный вход пользователя
-- name: To allow local user login
-  ansible.builtin.lineinfile:
-    path: /etc/vsftpd.conf
-    regexp: '^#local_enable=YES'
-    line: local_enable=YES
-
-     # Разрешаем включить загрузку файлов
-- name: To enable uploading file
-  ansible.builtin.lineinfile:
-    path: /etc/vsftpd.conf
-    regexp: '^#write_enable=YES'
-    line: write_enable=YES
-
-      # Запускаем демон vsftpd
-      # Описание модуля ansible.builtin.service: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
-- name: Start vsftpd demon
-  ansible.builtin.service:  
-        name: vsftpd
-        state: started
+    - name: adding user3 to sudoers
+      ansible.builtin.lineinfile: 
+        path: /etc/sudoers 
+        state: present
+        line: 'user3 ALL=(ALL)       NOPASSWD: ALL' 
+        validate: 'visudo -cf %s'
