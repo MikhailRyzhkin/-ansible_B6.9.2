@@ -1,0 +1,15 @@
+---
+# handlers file for nginx_php_fpm
+
+# Информация по модулю systemd: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
+# Рестарт демона nginx
+   - name: nginx restart
+     ansible.builtin.systemd:
+       name: nginx
+       state: restarted
+
+# Рестарт демона файервола:
+   - name: restart ufw
+     ansible.builtin.systemd:
+       name: ufw
+       state: restarted

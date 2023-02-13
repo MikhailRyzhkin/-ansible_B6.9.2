@@ -1,0 +1,15 @@
+
+      # Меняем содержимое файла index.html демона nginx на указанный в шаблонах
+      # Описание модуля ansible.builtin.template: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+- name: Replace index file at nginx
+  ansible.builtin.template:
+    src: /home/mikhail/GIT_REPO/github/skillfactory/Ansible/ansible_B6.9.2/roles/nginx_php-fpm/templates/index.html
+    dest: /usr/share/nginx/html/index.html
+    #dest: /var/www/html/index.html
+
+# Информация по модулю systemd: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
+# Рестарт демона nginx
+- name: nginx restart
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted

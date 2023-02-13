@@ -1,0 +1,25 @@
+
+      # Установка aptitude, инструмента для взаимодействия с менеджером пакетов Linux
+      # Описание модуля apt: https://docs.ansible.com/ansible/2.8/modules/apt_module.html#apt-module
+
+      # Установка dnsmasq
+   - name: Update apt and install dnsmasq
+     apt:
+       name: dnsmasq
+       state: latest
+
+      # Добавление dnsmasq в автозагрузку, запуск демона
+      # Описание модуля ansible.builtin.service: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+   - name: Run dnsmasq demon
+     ansible.builtin.service:  
+       name: dnsmasq
+       state: started
+
+      # Настраиваем файервол для работы демона dnsmasq
+      # Описание модуля community.general.ufw: https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
+   #- name: Setting firewalld - ufw for dnsmasq at ubuntu
+     #community.general.ufw:
+       #rule: allow
+       #name: dnsmasq
+     #notify: 
+     #- restart_dnsmasq

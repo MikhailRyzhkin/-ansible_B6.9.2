@@ -1,0 +1,61 @@
+
+       # Установка aptitude, инструмента для взаимодействия с менеджером пакетов Linux
+       # Описание модуля apt: https://docs.ansible.com/ansible/2.8/modules/apt_module.html#apt-module
+   - name: Install aptitude                               
+     apt:
+       name: aptitude
+       state: latest
+       update_cache: true
+
+       # Добавление ключа Nginx GPG
+       # Описание модуля apt_key: https://docs.ansible.com/ansible/2.8/modules/apt_key_module.html#apt-key-module
+   - name: Add Nginx GPG apt Key
+     apt_key:
+       url: http://nginx.org/keys/nginx_signing.key
+       state: present
+
+       # Добавление репозитория Nginx для Ubuntu focal
+       # Описание модуля apt_repository: https://docs.ansible.com/ansible/2.8/modules/apt_repository_module.html#apt-repository-module
+   - name: Add Nginx Repository for Ubuntu focal
+     apt_repository:
+       repo: deb https://nginx.org/packages/mainline/ubuntu/ focal nginx
+       state: present
+       update_cache: true
+
+       # Удаление коммон версии nginx, если она стоит
+   - name: Del Nginx-common
+     apt: 
+       name: nginx-common 
+       state: absent
+       update_cache: true
+
+       # Установка Nginx
+   - name: Update apt and install Nginx of Ubuntu
+     apt:
+       name: nginx
+       state: latest
+       update_cache: true
+
+       # Установка PHP-FPM 
+   - name: Update apt and install PHP-FPM of Ubuntu
+     apt: 
+       name: php-fpm
+       state: latest
+       update_cache: true
+
+       # Добавление Nginx в автозагрузку, запуск и проверка статуса демона
+       # Описание модуля ansible.builtin.service: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+   - name: Run Nginx demon
+     ansible.builtin.service:  
+       name: nginx
+       state: started
+       enabled: yes
+
+      # Настраиваем файервол для работы демона nginx
+      # Описание модуля community.general.ufw: https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
+#   - name: Setting firewalld - ufw for nginx at ubuntu
+#     community.general.ufw:
+#       rule: allow
+#       name: nginx
+#     notify: 
+#     - restart ufw

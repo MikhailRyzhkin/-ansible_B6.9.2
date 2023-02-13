@@ -1,0 +1,14 @@
+---
+# handlers file for dnsmasq
+
+# tasks:
+   - name: Restart firefald
+     command: echo "this task will restart the firefald services"
+     notify: "restart_dnsmasq"
+
+# handlers:
+   - name: restart_dnsmasq
+     service:
+       name: dnsmasq
+       state: restarted
+     listen: restart_dnsmasq

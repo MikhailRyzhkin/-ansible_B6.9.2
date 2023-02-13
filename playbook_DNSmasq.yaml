@@ -9,4 +9,4 @@
 
     # Указываем роль которую будем использовать
   roles:
-    - ftp_server_vsftpd
+    - dnsmmasq

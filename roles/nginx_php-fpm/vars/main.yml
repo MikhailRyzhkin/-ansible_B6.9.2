@@ -1,0 +1,4 @@
+---
+# vars file for fnginx_php_fpm
+
+#php_info: <?php phpinfo();?>
